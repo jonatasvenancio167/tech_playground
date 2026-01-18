@@ -1,0 +1,307 @@
+pt-BR:
+  app:
+    name: "Tech Playground"
+    title: "Tech Playground Analytics"
+    subtitle: "Painel de Feedback dos Funcionários"
+
+  # Ações gerais
+  action:
+    submit: "Enviar"
+    cancel: "Cancelar"
+    apply_filters: "Aplicar Filtros"
+    clear: "Limpar"
+    back_to_dashboard: "← Voltar ao Painel"
+    details: "Detalhes"
+    generate_report: "Gerar Relatório"
+
+  # Filtros
+  filters:
+    department: "Departamento"
+    location: "Localização"
+    date_from: "Data Início"
+    date_to: "Data Fim"
+    all_departments: "Todos os Departamentos"
+    all_locations: "Todas as Localizações"
+
+  # Métricas do Dashboard
+  dashboard:
+    title: "Tech Playground Analytics"
+    subtitle: "Painel de Feedback dos Funcionários"
+    total_employees: "Total de Funcionários"
+    response_rate: "Taxa de Resposta"
+    enps_score: "Pontuação eNPS"
+    overall_favorability: "Favorabilidade Geral"
+    last_updated: "Última atualização"
+
+    # Alertas críticos
+    critical_alerts: "Alertas Críticos"
+
+    # Forças e melhorias
+    top_strengths: "Principais Forças"
+    improvement_areas: "Áreas de Melhoria"
+
+    # Gráficos
+    enps_distribution: "Distribuição eNPS"
+    favorability_by_dimension: "Favorabilidade por Dimensão"
+
+    # Cards de navegação
+    company_overview:
+      title: "Visão Geral da Empresa"
+      description: "Análises detalhadas de toda a empresa"
+    department_breakdown:
+      title: "Detalhamento por Departamento"
+      description: "Compare o desempenho entre departamentos"
+    trends_history:
+      title: "Tendências e Histórico"
+      description: "Analise tendências ao longo do tempo"
+
+  # Página de Departamentos
+  departments:
+    title: "Detalhamento por Departamento"
+    subtitle: "Compare o desempenho entre todos os departamentos"
+    rankings_title: "Ranking de Departamentos"
+    rankings_subtitle: "Ordenado por Pontuação eNPS"
+
+    # Cabeçalhos da tabela
+    table:
+      rank: "Posição"
+      department: "Departamento"
+      employees: "Funcionários"
+      response_rate: "Taxa de Resposta"
+      enps_score: "Pontuação eNPS"
+      level: "Nível"
+      favorability: "Favorabilidade"
+      actions: "Ações"
+
+    # Detalhes do departamento
+    detailed_metrics: "Métricas Detalhadas"
+    enps_breakdown: "Distribuição eNPS"
+    promoters: "Promotores (9-10)"
+    passives: "Passivos (7-8)"
+    detractors: "Detratores (0-6)"
+
+    # Recomendações
+    recommendations: "Recomendações"
+    critical_action_required: "Crítico: Ação imediata necessária (eNPS negativo)"
+    focus_on_satisfaction: "Foque em melhorar a satisfação dos funcionários"
+    increase_participation: "Aumente a participação nas pesquisas"
+    review_favorability_drivers: "Revise os fatores de favorabilidade"
+    maintain_engagement: "Mantenha os níveis atuais de engajamento"
+
+    # Estatísticas
+    statistics:
+      title: "Estatísticas de Departamentos"
+      total_departments: "Total de Departamentos"
+      best_enps: "Melhor eNPS"
+      average_enps: "eNPS Médio"
+      departments_at_risk: "Departamentos em Risco"
+
+  # Página de Relatórios
+  reports:
+    title: "Geração de Relatórios"
+    subtitle: "Gere relatórios analíticos completos"
+    configure_title: "Configure seu Relatório"
+
+    # Formato do relatório
+    select_format: "1. Selecione o Formato do Relatório"
+    pdf_report:
+      title: "Relatório PDF"
+      description: "Resumo executivo com gráficos e análises"
+      feature_1: "Formatação profissional"
+      feature_2: "Pronto para apresentar"
+      feature_3: "Imprimível"
+    excel_report:
+      title: "Relatório Excel"
+      description: "Dados detalhados com múltiplas planilhas"
+      feature_1: "Múltiplas abas de dados"
+      feature_2: "Dados prontos para pivot"
+      feature_3: "Editável"
+
+    # Filtros
+    apply_filters_section: "2. Aplicar Filtros (Opcional)"
+
+    # Conteúdo incluído
+    whats_included: "3. O que está Incluído"
+    sections:
+      executive_summary:
+        title: "Resumo Executivo"
+        description: "Métricas principais e insights"
+      enps_analysis:
+        title: "Análise eNPS"
+        description: "Análise completa de NPS com interpretação"
+      favorability_analysis:
+        title: "Análise de Favorabilidade"
+        description: "Todas as dimensões com porcentagens"
+      department_breakdown:
+        title: "Detalhamento por Departamento"
+        description: "Comparação de desempenho entre departamentos"
+      raw_data_export:
+        title: "Exportação de Dados Brutos"
+        description: "Dados completos de respostas (somente Excel)"
+
+    # Exemplos
+    sample_screenshots: "Exemplos de Relatórios"
+    pdf_sample: "Exemplo PDF"
+    excel_sample: "Exemplo Excel"
+    pdf_description: "PDF profissional com gráficos e análises"
+    excel_description: "Excel multi-abas com dados detalhados"
+
+    # Erros
+    error_generating: "Erro ao gerar relatório: %{message}"
+
+  # Página de Tendências
+  trends:
+    months: "meses"
+    enps_evolution: "Evolução do eNPS"
+    response_rate_evolution: "Evolução da Taxa de Resposta"
+    favorability_evolution: "Evolução da Favorabilidade"
+    response_volume: "Volume de Respostas"
+    responses: "Respostas"
+    monthly_summary: "Resumo Mensal"
+    period: "Período"
+    no_data: "Nenhum dado disponível para o período selecionado"
+
+  # Níveis de eNPS
+  enps_levels:
+    excellent: "Excelente"
+    very_good: "Muito Bom"
+    good: "Bom"
+    needs_improvement: "Precisa Melhorar"
+    critical: "Crítico"
+
+  # Níveis de participação
+  participation_levels:
+    excellent: "Excelente"
+    good: "Bom"
+    medium: "Médio"
+    low: "Baixo"
+
+  # Dimensões de favorabilidade
+  dimensions:
+    interest_in_position: "Interesse na Posição"
+    contribution: "Contribuição"
+    learning_and_development: "Aprendizado e Desenvolvimento"
+    feedback: "Feedback"
+    interaction_with_manager: "Interação com Gestor"
+    career_opportunity_clarity: "Clareza de Oportunidade de Carreira"
+    permanence_expectation: "Expectativa de Permanência"
+
+  # ActiveRecord - Validações e atributos
+  activerecord:
+    models:
+      employee:
+        one: "Funcionário"
+        other: "Funcionários"
+      response:
+        one: "Resposta"
+        other: "Respostas"
+
+    attributes:
+      employee:
+        name: "Nome"
+        email: "E-mail"
+        corporate_email: "E-mail Corporativo"
+        department: "Departamento"
+        location: "Localização"
+        role: "Cargo"
+        generation: "Geração"
+        admission_date: "Data de Admissão"
+      response:
+        response_date: "Data da Resposta"
+        enps: "eNPS"
+        interest_in_position: "Interesse na Posição"
+        contribution: "Contribuição"
+        learning_and_development: "Aprendizado e Desenvolvimento"
+        feedback: "Feedback"
+        interaction_with_manager: "Interação com Gestor"
+        career_opportunity_clarity: "Clareza de Oportunidade de Carreira"
+        permanence_expectation: "Expectativa de Permanência"
+
+    errors:
+      models:
+        employee:
+          attributes:
+            name:
+              blank: "não pode ficar em branco"
+            email:
+              blank: "não pode ficar em branco"
+              taken: "já está em uso"
+              invalid: "não é um e-mail válido"
+            corporate_email:
+              invalid: "não é um e-mail válido"
+        response:
+          attributes:
+            response_date:
+              blank: "não pode ficar em branco"
+              taken: "já existe uma resposta para este funcionário nesta data"
+            enps:
+              inclusion: "deve estar entre 0 e 10"
+            interest_in_position:
+              inclusion: "deve estar entre 1 e 7"
+            contribution:
+              inclusion: "deve estar entre 1 e 7"
+            learning_and_development:
+              inclusion: "deve estar entre 1 e 7"
+            feedback:
+              inclusion: "deve estar entre 1 e 7"
+            interaction_with_manager:
+              inclusion: "deve estar entre 1 e 7"
+            career_opportunity_clarity:
+              inclusion: "deve estar entre 1 e 7"
+            permanence_expectation:
+              inclusion: "deve estar entre 1 e 7"
+      messages:
+        blank: "não pode ficar em branco"
+        taken: "já está em uso"
+        invalid: "é inválido"
+        inclusion: "não está incluído na lista"
+
+  # API
+  api:
+    errors:
+      csv_required: "Arquivo CSV é obrigatório (campo: file)"
+
+  # Importação de CSV
+  csv_imports:
+    statuses:
+      pending: "Pendente"
+      processing: "Processando"
+      completed: "Concluído"
+      failed: "Falhou"
+    messages:
+      queued: "Arquivo CSV enfileirado para processamento"
+      processing: "Processando arquivo CSV..."
+      completed: "Importação concluída com sucesso"
+      failed: "Falha na importação"
+    errors:
+      file_not_found: "Arquivo não encontrado"
+      invalid_format: "Formato de arquivo inválido"
+    duration:
+      seconds:
+        one: "%{count} segundo"
+        other: "%{count} segundos"
+      minutes:
+        one: "%{count} minuto"
+        other: "%{count} minutos"
+      hours:
+        one: "%{count} hora"
+        other: "%{count} horas"
+    progress:
+      title: "Progresso da Importação"
+      rows_processed: "%{processed} de %{total} linhas processadas"
+      employees_created: "Funcionários criados"
+      responses_created: "Respostas criadas"
+      errors_found: "Erros encontrados"
+
+  # Formatos de data e hora
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d/%m"
+      long: "%d de %B de %Y"
+
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M:%S"
+      short: "%d/%m %H:%M"
+      long: "%d de %B de %Y às %H:%M"

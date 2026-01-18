@@ -1,31 +1,307 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  app:
+    name: "Tech Playground"
+    title: "Tech Playground Analytics"
+    subtitle: "Employee Feedback Dashboard"
+
+  # General actions
+  action:
+    submit: "Submit"
+    cancel: "Cancel"
+    apply_filters: "Apply Filters"
+    clear: "Clear"
+    back_to_dashboard: "← Back to Dashboard"
+    details: "Details"
+    generate_report: "Generate Report"
+
+  # Filters
+  filters:
+    department: "Department"
+    location: "Location"
+    date_from: "From Date"
+    date_to: "To Date"
+    all_departments: "All Departments"
+    all_locations: "All Locations"
+
+  # Dashboard metrics
+  dashboard:
+    title: "Tech Playground Analytics"
+    subtitle: "Employee Feedback Dashboard"
+    total_employees: "Total Employees"
+    response_rate: "Response Rate"
+    enps_score: "eNPS Score"
+    overall_favorability: "Overall Favorability"
+    last_updated: "Last updated"
+
+    # Critical alerts
+    critical_alerts: "Critical Alerts"
+
+    # Strengths and improvements
+    top_strengths: "Top Strengths"
+    improvement_areas: "Improvement Areas"
+
+    # Charts
+    enps_distribution: "eNPS Distribution"
+    favorability_by_dimension: "Favorability by Dimension"
+
+    # Navigation cards
+    company_overview:
+      title: "Company Overview"
+      description: "Detailed company-wide analytics"
+    department_breakdown:
+      title: "Department Breakdown"
+      description: "Compare performance across departments"
+    trends_history:
+      title: "Trends & History"
+      description: "Analyze trends over time"
+
+  # Departments page
+  departments:
+    title: "Department Breakdown"
+    subtitle: "Compare performance across all departments"
+    rankings_title: "Department Rankings"
+    rankings_subtitle: "Sorted by eNPS Score"
+
+    # Table headers
+    table:
+      rank: "Rank"
+      department: "Department"
+      employees: "Employees"
+      response_rate: "Response Rate"
+      enps_score: "eNPS Score"
+      level: "Level"
+      favorability: "Favorability"
+      actions: "Actions"
+
+    # Department details
+    detailed_metrics: "Detailed Metrics"
+    enps_breakdown: "eNPS Distribution"
+    promoters: "Promoters (9-10)"
+    passives: "Passives (7-8)"
+    detractors: "Detractors (0-6)"
+
+    # Recommendations
+    recommendations: "Recommendations"
+    critical_action_required: "Critical: Immediate action required (eNPS negative)"
+    focus_on_satisfaction: "Focus on improving employee satisfaction"
+    increase_participation: "Increase survey participation"
+    review_favorability_drivers: "Review favorability drivers"
+    maintain_engagement: "Maintain current engagement levels"
+
+    # Statistics
+    statistics:
+      title: "Department Statistics"
+      total_departments: "Total Departments"
+      best_enps: "Best eNPS"
+      average_enps: "Average eNPS"
+      departments_at_risk: "Departments at Risk"
+
+  # Reports page
+  reports:
+    title: "Report Generation"
+    subtitle: "Generate comprehensive analytics reports"
+    configure_title: "Configure Your Report"
+
+    # Report format
+    select_format: "1. Select Report Format"
+    pdf_report:
+      title: "PDF Report"
+      description: "Executive summary with charts and analysis"
+      feature_1: "Professional formatting"
+      feature_2: "Ready to present"
+      feature_3: "Printable"
+    excel_report:
+      title: "Excel Report"
+      description: "Detailed data with multiple sheets"
+      feature_1: "Multiple data sheets"
+      feature_2: "Pivot-ready data"
+      feature_3: "Editable"
+
+    # Filters
+    apply_filters_section: "2. Apply Filters (Optional)"
+
+    # Included content
+    whats_included: "3. What's Included"
+    sections:
+      executive_summary:
+        title: "Executive Summary"
+        description: "Key metrics and headline insights"
+      enps_analysis:
+        title: "eNPS Analysis"
+        description: "Complete NPS breakdown and interpretation"
+      favorability_analysis:
+        title: "Favorability Analysis"
+        description: "All dimensions with percentages"
+      department_breakdown:
+        title: "Department Breakdown"
+        description: "Performance comparison across departments"
+      raw_data_export:
+        title: "Raw Data Export"
+        description: "Complete response data (Excel only)"
+
+    # Examples
+    sample_screenshots: "Sample Report Screenshots"
+    pdf_sample: "PDF Sample"
+    excel_sample: "Excel Sample"
+    pdf_description: "Professional PDF with charts and analysis"
+    excel_description: "Multi-sheet Excel with detailed data"
+
+    # Errors
+    error_generating: "Error generating report: %{message}"
+
+  # Trends page
+  trends:
+    months: "months"
+    enps_evolution: "eNPS Evolution"
+    response_rate_evolution: "Response Rate Evolution"
+    favorability_evolution: "Favorability Evolution"
+    response_volume: "Response Volume"
+    responses: "Responses"
+    monthly_summary: "Monthly Summary"
+    period: "Period"
+    no_data: "No data available for the selected period"
+
+  # eNPS levels
+  enps_levels:
+    excellent: "Excellent"
+    very_good: "Very Good"
+    good: "Good"
+    needs_improvement: "Needs Improvement"
+    critical: "Critical"
+
+  # Participation levels
+  participation_levels:
+    excellent: "Excellent"
+    good: "Good"
+    medium: "Medium"
+    low: "Low"
+
+  # Favorability dimensions
+  dimensions:
+    interest_in_position: "Interest in Position"
+    contribution: "Contribution"
+    learning_and_development: "Learning and Development"
+    feedback: "Feedback"
+    interaction_with_manager: "Interaction with Manager"
+    career_opportunity_clarity: "Career Opportunity Clarity"
+    permanence_expectation: "Permanence Expectation"
+
+  # ActiveRecord - Validations and attributes
+  activerecord:
+    models:
+      employee:
+        one: "Employee"
+        other: "Employees"
+      response:
+        one: "Response"
+        other: "Responses"
+
+    attributes:
+      employee:
+        name: "Name"
+        email: "Email"
+        corporate_email: "Corporate Email"
+        department: "Department"
+        location: "Location"
+        role: "Role"
+        generation: "Generation"
+        admission_date: "Admission Date"
+      response:
+        response_date: "Response Date"
+        enps: "eNPS"
+        interest_in_position: "Interest in Position"
+        contribution: "Contribution"
+        learning_and_development: "Learning and Development"
+        feedback: "Feedback"
+        interaction_with_manager: "Interaction with Manager"
+        career_opportunity_clarity: "Career Opportunity Clarity"
+        permanence_expectation: "Permanence Expectation"
+
+    errors:
+      models:
+        employee:
+          attributes:
+            name:
+              blank: "can't be blank"
+            email:
+              blank: "can't be blank"
+              taken: "has already been taken"
+              invalid: "is not a valid email"
+            corporate_email:
+              invalid: "is not a valid email"
+        response:
+          attributes:
+            response_date:
+              blank: "can't be blank"
+              taken: "a response already exists for this employee on this date"
+            enps:
+              inclusion: "must be between 0 and 10"
+            interest_in_position:
+              inclusion: "must be between 1 and 7"
+            contribution:
+              inclusion: "must be between 1 and 7"
+            learning_and_development:
+              inclusion: "must be between 1 and 7"
+            feedback:
+              inclusion: "must be between 1 and 7"
+            interaction_with_manager:
+              inclusion: "must be between 1 and 7"
+            career_opportunity_clarity:
+              inclusion: "must be between 1 and 7"
+            permanence_expectation:
+              inclusion: "must be between 1 and 7"
+      messages:
+        blank: "can't be blank"
+        taken: "has already been taken"
+        invalid: "is invalid"
+        inclusion: "is not included in the list"
+
+  # API
+  api:
+    errors:
+      csv_required: "CSV file is required (field: file)"
+
+  # CSV Imports
+  csv_imports:
+    statuses:
+      pending: "Pending"
+      processing: "Processing"
+      completed: "Completed"
+      failed: "Failed"
+    messages:
+      queued: "CSV file queued for processing"
+      processing: "Processing CSV file..."
+      completed: "Import completed successfully"
+      failed: "Import failed"
+    errors:
+      file_not_found: "File not found"
+      invalid_format: "Invalid file format"
+    duration:
+      seconds:
+        one: "%{count} second"
+        other: "%{count} seconds"
+      minutes:
+        one: "%{count} minute"
+        other: "%{count} minutes"
+      hours:
+        one: "%{count} hour"
+        other: "%{count} hours"
+    progress:
+      title: "Import Progress"
+      rows_processed: "%{processed} of %{total} rows processed"
+      employees_created: "Employees created"
+      responses_created: "Responses created"
+      errors_found: "Errors found"
+
+  # Date and time formats
+  date:
+    formats:
+      default: "%Y-%m-%d"
+      short: "%m/%d"
+      long: "%B %d, %Y"
+
+  time:
+    formats:
+      default: "%Y-%m-%d %H:%M:%S"
+      short: "%m/%d %H:%M"
+      long: "%B %d, %Y at %H:%M"
