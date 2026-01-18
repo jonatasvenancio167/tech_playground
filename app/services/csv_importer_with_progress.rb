@@ -1,23 +1,25 @@
 require "csv"
 
-class CsvImporter
+class CsvImporterWithProgress
   Result = Struct.new(:employees_created, :responses_created, :errors, keyword_init: true)
 
-  def initialize(io:, progress: false)
+  PROGRESS_UPDATE_INTERVAL = 50 
+
+  def initialize(io:, csv_import:)
     @io = io
-    @progress = progress
+    @csv_import = csv_import
   end
 
   def import
     employees_created = 0
     responses_created = 0
     errors = []
-    total_rows = 0
+    processed = 0
 
     csv = CSV.new(@io, headers: true, col_sep: ";")
 
     csv.each.with_index do |row, index|
-      total_rows += 1
+      processed += 1
 
       begin
         ActiveRecord::Base.transaction do
@@ -27,13 +29,15 @@ class CsvImporter
 
           create_response(employee, row)
           responses_created += 1
-
-          show_progress(index + 1) if @progress
         end
       rescue => e
         errors << build_error_message(row, index + 2, e)
       end
+
+      update_progress(processed) if should_update_progress?(processed)
     end
+
+    update_progress(processed)
 
     Result.new(
       employees_created: employees_created,
@@ -44,11 +48,21 @@ class CsvImporter
 
   private
 
+  def should_update_progress?(processed)
+    processed % PROGRESS_UPDATE_INTERVAL == 0
+  end
+
+  def update_progress(processed)
+    @csv_import.update_progress!(processed_rows: processed)
+  rescue => e
+    Rails.logger.warn "[CsvImporterWithProgress] Failed to update progress: #{e.message}"
+  end
+
   def find_or_create_employee(row)
     employee = Employee.find_or_initialize_by(
       corporate_email: safe(row["email_corporativo"])
     )
-    
+
     employee.assign_attributes(
       name: safe(row["nome"]) || employee.name,
       email: safe(row["email"]),
@@ -66,7 +80,7 @@ class CsvImporter
       n3_coordination: safe(row["n3_coordenacao"]),
       n4_area: safe(row["n4_area"])
     )
-    
+
     employee.save!
     employee
   end
@@ -113,10 +127,6 @@ class CsvImporter
     response
   end
 
-  def show_progress(current)
-    print "\rProcessed #{current} rows..." if current % 100 == 0
-  end
-
   def build_error_message(row, line_number, error)
     {
       line: line_number,
@@ -125,4 +135,3 @@ class CsvImporter
     }
   end
 end
-
