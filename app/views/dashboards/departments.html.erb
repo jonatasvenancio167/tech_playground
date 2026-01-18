@@ -1,0 +1,393 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1><%= t('departments.title') %></h1>
+    <p class="subtitle"><%= t('departments.subtitle') %></p>
+    <%= link_to t('action.back_to_dashboard'), dashboards_path, class: "btn btn-secondary" %>
+  </div>
+
+  <%= render "shared/filters", filters: @filters %>
+
+  <!-- Departments Table -->
+  <div class="table-card">
+    <h2><%= t('departments.rankings_title') %></h2>
+    <p class="subtitle"><%= t('departments.rankings_subtitle') %></p>
+
+    <div class="table-responsive">
+      <table class="departments-table">
+        <thead>
+          <tr>
+            <th><%= t('departments.table.rank') %></th>
+            <th><%= t('departments.table.department') %></th>
+            <th><%= t('departments.table.employees') %></th>
+            <th><%= t('departments.table.response_rate') %></th>
+            <th><%= t('departments.table.enps_score') %></th>
+            <th><%= t('departments.table.level') %></th>
+            <th><%= t('departments.table.favorability') %></th>
+            <th><%= t('departments.table.actions') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @departments.each_with_index do |dept, index| %>
+            <tr class="<%= 'at-risk' if dept[:enps][:score] < 0 %>">
+              <td class="rank">
+                <% if index < 3 %>
+                  <span class="medal"><%= ["🥇", "🥈", "🥉"][index] %></span>
+                <% else %>
+                  <%= index + 1 %>
+                <% end %>
+              </td>
+              <td class="department-name">
+                <strong><%= dept[:department].titleize %></strong>
+              </td>
+              <td><%= dept[:total_employees] %></td>
+              <td>
+                <%= number_to_percentage(dept[:participation][:response_rate], precision: 1) %>
+                <small>(<%= dept[:participation][:employees_responded] %> / <%= dept[:participation][:total_employees] %>)</small>
+              </td>
+              <td class="enps-score <%= enps_class(dept[:enps][:score]) %>">
+                <strong><%= number_with_precision(dept[:enps][:score], precision: 1) %></strong>
+              </td>
+              <td>
+                <span class="badge badge-<%= enps_badge_color(dept[:enps][:level]) %>">
+                  <%= t("enps_levels.#{dept[:enps][:level]}") %>
+                </span>
+              </td>
+              <td>
+                <div class="favorability-bar">
+                  <div class="bar-fill" style="width: <%= dept[:favorability] %>%; background: <%= favorability_color(dept[:favorability]) %>;"></div>
+                  <span class="bar-label"><%= number_to_percentage(dept[:favorability], precision: 1) %></span>
+                </div>
+              </td>
+              <td>
+                <button class="btn btn-small" onclick="toggleDetails('<%= dept[:department] %>')">
+                  <%= t('action.details') %>
+                </button>
+              </td>
+            </tr>
+
+            <!-- Details Row (Hidden by default) -->
+            <tr id="details-<%= dept[:department] %>" class="details-row" style="display: none;">
+              <td colspan="8">
+                <div class="department-details">
+                  <h4><%= dept[:department].titleize %> - <%= t('departments.detailed_metrics') %></h4>
+
+                  <div class="details-grid">
+                    <!-- eNPS Breakdown -->
+                    <div class="detail-card">
+                      <h5><%= t('departments.enps_breakdown') %></h5>
+                      <div class="enps-breakdown">
+                        <div class="enps-item promoters">
+                          <span class="label"><%= t('departments.promoters') %></span>
+                          <span class="value"><%= dept[:enps][:promoters][:count] %> (<%= number_to_percentage(dept[:enps][:promoters][:percentage], precision: 0) %>)</span>
+                        </div>
+                        <div class="enps-item passives">
+                          <span class="label"><%= t('departments.passives') %></span>
+                          <span class="value"><%= dept[:enps][:passives][:count] %> (<%= number_to_percentage(dept[:enps][:passives][:percentage], precision: 0) %>)</span>
+                        </div>
+                        <div class="enps-item detractors">
+                          <span class="label"><%= t('departments.detractors') %></span>
+                          <span class="value"><%= dept[:enps][:detractors][:count] %> (<%= number_to_percentage(dept[:enps][:detractors][:percentage], precision: 0) %>)</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Key Recommendations -->
+                    <div class="detail-card">
+                      <h5><%= t('departments.recommendations') %></h5>
+                      <ul class="recommendations-list">
+                        <% if dept[:enps][:score] < 0 %>
+                          <li class="urgent"><%= t('departments.critical_action_required') %></li>
+                        <% elsif dept[:enps][:score] < 30 %>
+                          <li class="warning"><%= t('departments.focus_on_satisfaction') %></li>
+                        <% end %>
+
+                        <% if dept[:participation][:response_rate] < 60 %>
+                          <li class="warning"><%= t('departments.increase_participation') %></li>
+                        <% end %>
+
+                        <% if dept[:favorability] < 70 %>
+                          <li><%= t('departments.review_favorability_drivers') %></li>
+                        <% end %>
+
+                        <% if dept[:enps][:score] >= 50 %>
+                          <li class="success"><%= t('departments.maintain_engagement') %></li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Summary Statistics -->
+  <div class="summary-cards">
+    <div class="summary-card">
+      <h3><%= t('departments.statistics.title') %></h3>
+      <ul>
+        <li><%= t('departments.statistics.total_departments') %>: <strong><%= @departments.count %></strong></li>
+        <li><%= t('departments.statistics.best_enps') %>: <strong><%= number_with_precision(@departments.first[:enps][:score], precision: 1) %></strong> (<%= @departments.first[:department].titleize %>)</li>
+        <li><%= t('departments.statistics.average_enps') %>: <strong><%= number_with_precision(@departments.sum { |d| d[:enps][:score] } / @departments.count, precision: 1) %></strong></li>
+        <li><%= t('departments.statistics.departments_at_risk') %>: <strong><%= @departments.count { |d| d[:enps][:score] < 0 } %></strong></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+.table-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.table-card h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 1.5rem;
+}
+
+.departments-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.departments-table th {
+  background: #f3f4f6;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.departments-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.departments-table tr.at-risk {
+  background: #fef2f2;
+}
+
+.rank {
+  font-weight: 600;
+  color: #6b7280;
+  text-align: center;
+}
+
+.medal {
+  font-size: 1.5rem;
+}
+
+.department-name strong {
+  color: #111827;
+}
+
+.enps-score {
+  font-size: 1.25rem;
+}
+
+.enps-score.excellent { color: #10b981; }
+.enps-score.very_good { color: #3b82f6; }
+.enps-score.good { color: #f59e0b; }
+.enps-score.needs_improvement, .enps-score.critical { color: #ef4444; }
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-success { background: #d1fae5; color: #065f46; }
+.badge-info { background: #dbeafe; color: #1e40af; }
+.badge-primary { background: #e0e7ff; color: #3730a3; }
+.badge-warning { background: #fef3c7; color: #92400e; }
+.badge-danger { background: #fee2e2; color: #991b1b; }
+
+.favorability-bar {
+  position: relative;
+  height: 24px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 120px;
+}
+
+.favorability-bar .bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.favorability-bar .bar-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.btn-small {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-small:hover {
+  background: #2563eb;
+}
+
+.details-row td {
+  padding: 0 !important;
+}
+
+.department-details {
+  padding: 2rem;
+  background: #f9fafb;
+}
+
+.department-details h4 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  color: #111827;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.detail-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.detail-card h5 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.enps-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.enps-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+.enps-item.promoters { background: #d1fae5; }
+.enps-item.passives { background: #fef3c7; }
+.enps-item.detractors { background: #fee2e2; }
+
+.enps-item .label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.enps-item .value {
+  font-weight: 600;
+}
+
+.recommendations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recommendations-list li {
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  background: #f3f4f6;
+}
+
+.recommendations-list li.urgent {
+  background: #fee2e2;
+  color: #991b1b;
+  font-weight: 600;
+}
+
+.recommendations-list li.warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.recommendations-list li.success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.summary-cards {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.summary-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.summary-card h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.summary-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.summary-card li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.summary-card li:last-child {
+  border-bottom: none;
+}
+</style>
+
+<script>
+function toggleDetails(department) {
+  const row = document.getElementById('details-' + department);
+  if (row.style.display === 'none') {
+    row.style.display = 'table-row';
+  } else {
+    row.style.display = 'none';
+  }
+}
+</script>
+
+<%= render "shared/dashboard_styles" %>

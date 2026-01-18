@@ -1,0 +1,99 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1><%= t('dashboard.company_overview.title') %></h1>
+    <p class="subtitle"><%= t('dashboard.company_overview.description') %></p>
+    <%= link_to t('action.back_to_dashboard'), dashboards_path, class: "btn btn-secondary" %>
+  </div>
+
+  <%= render "shared/filters", filters: @filters %>
+
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-icon">👥</div>
+      <div class="metric-content">
+        <div class="metric-value"><%= @overview[:total_employees] %></div>
+        <div class="metric-label"><%= t('dashboard.total_employees') %></div>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon">📈</div>
+      <div class="metric-content">
+        <div class="metric-value"><%= number_to_percentage(@overview[:response_rate], precision: 1) %></div>
+        <div class="metric-label"><%= t('dashboard.response_rate') %></div>
+      </div>
+    </div>
+
+    <div class="metric-card <%= enps_class(@overview[:enps][:score]) %>">
+      <div class="metric-icon">⭐</div>
+      <div class="metric-content">
+        <div class="metric-value"><%= number_with_precision(@overview[:enps][:score], precision: 1) %></div>
+        <div class="metric-label"><%= t('dashboard.enps_score') %></div>
+        <div class="metric-badge"><%= t("enps_levels.#{@overview[:enps][:level]}") %></div>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon">💯</div>
+      <div class="metric-content">
+        <div class="metric-value"><%= number_to_percentage(@overview[:overall_favorability], precision: 1) %></div>
+        <div class="metric-label"><%= t('dashboard.overall_favorability') %></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- eNPS Distribution -->
+  <div class="charts-section">
+    <div class="chart-card">
+      <h3><%= t('dashboard.enps_distribution') %></h3>
+      <div class="enps-breakdown">
+        <div class="enps-item promoters">
+          <div class="enps-icon">😊</div>
+          <div class="enps-content">
+            <div class="enps-label"><%= t('departments.promoters') %></div>
+            <div class="enps-value"><%= @overview[:enps][:promoters][:count] %></div>
+            <div class="enps-percentage"><%= number_to_percentage(@overview[:enps][:promoters][:percentage], precision: 1) %></div>
+          </div>
+        </div>
+        <div class="enps-item passives">
+          <div class="enps-icon">😐</div>
+          <div class="enps-content">
+            <div class="enps-label"><%= t('departments.passives') %></div>
+            <div class="enps-value"><%= @overview[:enps][:passives][:count] %></div>
+            <div class="enps-percentage"><%= number_to_percentage(@overview[:enps][:passives][:percentage], precision: 1) %></div>
+          </div>
+        </div>
+        <div class="enps-item detractors">
+          <div class="enps-icon">😞</div>
+          <div class="enps-content">
+            <div class="enps-label"><%= t('departments.detractors') %></div>
+            <div class="enps-value"><%= @overview[:enps][:detractors][:count] %></div>
+            <div class="enps-percentage"><%= number_to_percentage(@overview[:enps][:detractors][:percentage], precision: 1) %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3><%= t('dashboard.favorability_by_dimension') %></h3>
+      <div class="dimension-list">
+        <% @overview[:favorability].each do |dimension, data| %>
+          <div class="dimension-item">
+            <div class="dimension-name"><%= t("dimensions.#{dimension}", default: dimension.to_s.titleize) %></div>
+            <div class="dimension-bar">
+              <div class="bar-fill" style="width: <%= data[:percentage] %>%; background: <%= favorability_color(data[:percentage]) %>;"></div>
+              <span class="bar-label"><%= number_to_percentage(data[:percentage], precision: 1) %></span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timestamp -->
+  <div class="dashboard-footer">
+    <small><%= t('dashboard.last_updated') %>: <%= l(@overview[:timestamp], format: :default) %></small>
+  </div>
+</div>
+
+<%= render "shared/dashboard_styles" %>

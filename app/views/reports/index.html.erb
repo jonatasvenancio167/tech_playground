@@ -1,0 +1,358 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1><%= t('reports.title') %></h1>
+    <p class="subtitle"><%= t('reports.subtitle') %></p>
+    <%= link_to t('action.back_to_dashboard'), dashboards_path, class: "btn btn-secondary" %>
+  </div>
+
+  <div class="report-builder">
+    <h2><%= t('reports.configure_title') %></h2>
+
+    <%= form_with url: generate_reports_path, method: :post, class: "report-form" do |f| %>
+      <!-- Report Type -->
+      <div class="form-section">
+        <h3><%= t('reports.select_format') %></h3>
+        <div class="report-types">
+          <label class="report-type-card">
+            <%= radio_button_tag :report_type, 'pdf', true %>
+            <div class="card-content">
+              <div class="icon">📑</div>
+              <h4><%= t('reports.pdf_report.title') %></h4>
+              <p><%= t('reports.pdf_report.description') %></p>
+              <ul>
+                <li><%= t('reports.pdf_report.feature_1') %></li>
+                <li><%= t('reports.pdf_report.feature_2') %></li>
+                <li><%= t('reports.pdf_report.feature_3') %></li>
+              </ul>
+            </div>
+          </label>
+
+          <label class="report-type-card">
+            <%= radio_button_tag :report_type, 'excel', false %>
+            <div class="card-content">
+              <div class="icon">📊</div>
+              <h4><%= t('reports.excel_report.title') %></h4>
+              <p><%= t('reports.excel_report.description') %></p>
+              <ul>
+                <li><%= t('reports.excel_report.feature_1') %></li>
+                <li><%= t('reports.excel_report.feature_2') %></li>
+                <li><%= t('reports.excel_report.feature_3') %></li>
+              </ul>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="form-section">
+        <h3><%= t('reports.apply_filters_section') %></h3>
+
+        <div class="filters-grid">
+          <div class="filter-group">
+            <label for="department"><%= t('filters.department') %></label>
+            <%= select_tag :department,
+                options_for_select(
+                  [[t('filters.all_departments'), ""]] + Employee.distinct.pluck(:department).compact.sort.map { |d| [d.titleize, d] }
+                ),
+                class: "filter-select" %>
+          </div>
+
+          <div class="filter-group">
+            <label for="location"><%= t('filters.location') %></label>
+            <%= select_tag :location,
+                options_for_select(
+                  [[t('filters.all_locations'), ""]] + Employee.distinct.pluck(:location).compact.sort.map { |l| [l, l] }
+                ),
+                class: "filter-select" %>
+          </div>
+
+          <div class="filter-group">
+            <label for="date_from"><%= t('filters.date_from') %></label>
+            <%= date_field_tag :date_from, nil, class: "filter-input" %>
+          </div>
+
+          <div class="filter-group">
+            <label for="date_to"><%= t('filters.date_to') %></label>
+            <%= date_field_tag :date_to, nil, class: "filter-input" %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Report Content -->
+      <div class="form-section">
+        <h3><%= t('reports.whats_included') %></h3>
+
+        <div class="included-sections">
+          <div class="section-item">
+            <span class="check">✓</span>
+            <div>
+              <strong><%= t('reports.sections.executive_summary.title') %></strong>
+              <p><%= t('reports.sections.executive_summary.description') %></p>
+            </div>
+          </div>
+
+          <div class="section-item">
+            <span class="check">✓</span>
+            <div>
+              <strong><%= t('reports.sections.enps_analysis.title') %></strong>
+              <p><%= t('reports.sections.enps_analysis.description') %></p>
+            </div>
+          </div>
+
+          <div class="section-item">
+            <span class="check">✓</span>
+            <div>
+              <strong><%= t('reports.sections.favorability_analysis.title') %></strong>
+              <p><%= t('reports.sections.favorability_analysis.description') %></p>
+            </div>
+          </div>
+
+          <div class="section-item">
+            <span class="check">✓</span>
+            <div>
+              <strong><%= t('reports.sections.department_breakdown.title') %></strong>
+              <p><%= t('reports.sections.department_breakdown.description') %></p>
+            </div>
+          </div>
+
+          <div class="section-item excel-only" style="opacity: 0.5;">
+            <span class="check">✓</span>
+            <div>
+              <strong><%= t('reports.sections.raw_data_export.title') %></strong>
+              <p><%= t('reports.sections.raw_data_export.description') %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Generate Button -->
+      <div class="form-actions">
+        <%= submit_tag t('action.generate_report'), class: "btn btn-primary btn-large" %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Report Examples -->
+  <div class="examples-section">
+    <h3><%= t('reports.sample_screenshots') %></h3>
+    <div class="examples-grid">
+      <div class="example-card">
+        <div class="example-placeholder"><%= t('reports.pdf_sample') %></div>
+        <p><%= t('reports.pdf_description') %></p>
+      </div>
+      <div class="example-card">
+        <div class="example-placeholder"><%= t('reports.excel_sample') %></div>
+        <p><%= t('reports.excel_description') %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.report-builder {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.report-builder h2 {
+  margin: 0 0 2rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.form-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.form-section h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.report-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.report-type-card {
+  position: relative;
+  cursor: pointer;
+  display: block;
+}
+
+.report-type-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.report-type-card .card-content {
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.2s;
+}
+
+.report-type-card input[type="radio"]:checked + .card-content {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.report-type-card:hover .card-content {
+  border-color: #3b82f6;
+}
+
+.report-type-card .icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.report-type-card h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.report-type-card p {
+  margin: 0 0 1rem 0;
+  color: #6b7280;
+}
+
+.report-type-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.report-type-card li {
+  padding: 0.25rem 0;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.report-type-card li:before {
+  content: "✓ ";
+  color: #10b981;
+  font-weight: 600;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.included-sections {
+  display: grid;
+  gap: 1rem;
+}
+
+.section-item {
+  display: flex;
+  gap: 1rem;
+  align-items: start;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.section-item .check {
+  font-size: 1.5rem;
+  color: #10b981;
+}
+
+.section-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #111827;
+}
+
+.section-item p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+}
+
+.btn-large {
+  padding: 1rem 3rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.examples-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.examples-section h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.examples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.example-card {
+  text-align: center;
+}
+
+.example-placeholder {
+  height: 200px;
+  background: #f3f4f6;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  color: #9ca3af;
+  margin-bottom: 0.75rem;
+}
+
+.example-card p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+</style>
+
+<script>
+// Toggle Excel-only sections opacity
+document.querySelectorAll('input[name="report_type"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    const excelOnlySections = document.querySelectorAll('.excel-only');
+    if (this.value === 'excel') {
+      excelOnlySections.forEach(section => section.style.opacity = '1');
+    } else {
+      excelOnlySections.forEach(section => section.style.opacity = '0.5');
+    }
+  });
+});
+</script>
+
+<%= render "shared/dashboard_styles" %>

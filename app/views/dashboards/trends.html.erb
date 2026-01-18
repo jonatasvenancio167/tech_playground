@@ -1,0 +1,98 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1><%= t('dashboard.trends_history.title') %></h1>
+    <p class="subtitle"><%= t('dashboard.trends_history.description') %></p>
+    <%= link_to t('action.back_to_dashboard'), dashboards_path, class: "btn btn-secondary" %>
+  </div>
+
+  <%= render "shared/filters", filters: @filters %>
+
+  <!-- Period Selector -->
+  <div class="period-selector">
+    <%= link_to "3 #{t('trends.months')}", trends_dashboards_path(months: 3), class: "btn #{@months == 3 ? 'btn-primary' : 'btn-secondary'}" %>
+    <%= link_to "6 #{t('trends.months')}", trends_dashboards_path(months: 6), class: "btn #{@months == 6 ? 'btn-primary' : 'btn-secondary'}" %>
+    <%= link_to "12 #{t('trends.months')}", trends_dashboards_path(months: 12), class: "btn #{@months == 12 ? 'btn-primary' : 'btn-secondary'}" %>
+  </div>
+
+  <% enps_trend = @trends[:enps_trend] || [] %>
+  <% response_trend = @trends[:response_trend] || [] %>
+
+  <!-- eNPS Trend Chart -->
+  <div class="chart-card">
+    <h3><%= t('trends.enps_evolution') %></h3>
+    <% if enps_trend.any? %>
+      <%= line_chart enps_trend.map { |t| [t[:period], t[:score]] },
+          colors: ["#3b82f6"],
+          library: {
+            scales: {
+              y: {
+                min: -100,
+                max: 100,
+                title: { display: true, text: 'eNPS Score' }
+              }
+            }
+          } %>
+    <% else %>
+      <p class="no-data"><%= t('trends.no_data') %></p>
+    <% end %>
+  </div>
+
+  <!-- Response Volume Trend -->
+  <div class="chart-card">
+    <h3><%= t('trends.response_volume') %></h3>
+    <% if response_trend.any? %>
+      <%= line_chart response_trend.map { |t| [t[:period], t[:count]] },
+          colors: ["#10b981"],
+          library: {
+            scales: {
+              y: {
+                min: 0,
+                title: { display: true, text: t('trends.responses') }
+              }
+            }
+          } %>
+    <% else %>
+      <p class="no-data"><%= t('trends.no_data') %></p>
+    <% end %>
+  </div>
+
+  <!-- Monthly Summary Table -->
+  <% if enps_trend.any? %>
+    <div class="table-card">
+      <h3><%= t('trends.monthly_summary') %></h3>
+      <div class="table-responsive">
+        <table class="trends-table">
+          <thead>
+            <tr>
+              <th><%= t('trends.period') %></th>
+              <th><%= t('dashboard.enps_score') %></th>
+              <th><%= t('departments.table.level') %></th>
+              <th><%= t('trends.responses') %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% enps_trend.each_with_index do |enps_data, index| %>
+              <tr>
+                <td><%= enps_data[:period] %></td>
+                <td class="<%= enps_class(enps_data[:score]) %>">
+                  <strong><%= number_with_precision(enps_data[:score], precision: 1) %></strong>
+                </td>
+                <td>
+                  <span class="badge badge-<%= enps_badge_color(enps_data[:level]) %>">
+                    <%= t("enps_levels.#{enps_data[:level]}", default: enps_data[:level].to_s.titleize) %>
+                  </span>
+                </td>
+                <td>
+                  <% resp = response_trend[index] %>
+                  <%= resp ? resp[:count] : '-' %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%= render "shared/dashboard_styles" %>
