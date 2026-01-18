@@ -11,4 +11,10 @@ export RAILS_ENV="${RAILS_ENV:-development}"
 export DATABASE_URL="${DATABASE_URL:-postgres://postgres:postgres@db:5432/rails_dev}"
 
 bundle exec rails db:prepare
+
+# Build Tailwind CSS before starting server
+if [ "$RAILS_ENV" = "development" ]; then
+  bundle exec rails tailwindcss:build
+fi
+
 exec bundle exec rails server -b 0.0.0.0 -p ${PORT:-3000}

@@ -4,32 +4,34 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: rails_dev
+      POSTGRES_DB: app_test
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d app_test"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  web:
+  test:
     build:
       context: .
       dockerfile: Dockerfile.dev
     working_dir: /app
     depends_on:
-      - db
-    ports:
-      - "3000:3000"
+      db:
+        condition: service_healthy
     environment:
-      RAILS_ENV: development
-      DATABASE_URL: postgres://postgres:postgres@db:5432/rails_dev
-      PORT: 3000
-      BUNDLE_PATH: /usr/local/bundle
+      RAILS_ENV: test
+      DATABASE_URL: postgres://postgres:postgres@db:5432/app_test
       BUNDLE_WITHOUT: "production"
+      BUNDLE_PATH: /usr/local/bundle
     volumes:
-      - .:/app
-      - ./entrypoint.sh:/usr/local/bin/entrypoint.sh:ro
+      - ./:/app
       - bundle:/usr/local/bundle
-    command: ["/usr/bin/env", "bash", "/usr/local/bin/entrypoint.sh"]
+    command: ["bash", "-lc", "bundle exec rails db:prepare && bundle exec rspec"]
 
 volumes:
   pgdata:
