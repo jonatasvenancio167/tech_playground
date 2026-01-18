@@ -1,7 +1,8 @@
-source "https://rubygems.org"
+  source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.1.2"
+gem "csv"  # Required for Ruby 3.4+
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use postgresql as the database for Active Record
@@ -10,6 +11,8 @@ gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
+# Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
+gem "tailwindcss-rails"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
@@ -46,6 +49,13 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # RSpec for testing
+  gem "rspec-rails", "~> 7.0"
+
+  # Testing utilities
+  gem "factory_bot_rails", "~> 6.4"  # Test data factories
+  gem "faker", "~> 3.2"               # Generate fake data
 end
 
 group :development do
@@ -57,4 +67,29 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+
+  # Better test output and reporting
+  gem "shoulda-matchers", "~> 6.0"
+  gem "simplecov", require: false
+  gem "database_cleaner-active_record", "~> 2.1"
+  gem "webmock", "~> 3.19"
 end
+
+# Analytics and Visualization
+gem "chartkick", "~> 5.0"       # Easy charts for dashboard
+gem "groupdate", "~> 6.4"       # Time series grouping
+gem "pagy", "~> 7.0"            # Fast pagination
+gem "view_component", "~> 3.9" # Component-based views
+
+# Report Generation
+gem "prawn", "~> 2.4"           # PDF generation
+gem "prawn-table", "~> 0.2"    # Tables in PDF
+gem "caxlsx", "~> 4.1"         # Excel generation
+gem "caxlsx_rails", "~> 0.6"   # Rails Excel integration
+
+# API enhancements
+gem "rack-cors", "~> 2.0"       # CORS support
+gem "rack-attack", "~> 6.7"     # Rate limiting
+
+# Performance
+gem "bullet", group: :development  # N+1 query detection
