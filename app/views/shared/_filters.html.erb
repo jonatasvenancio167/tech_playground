@@ -1,0 +1,119 @@
+<div class="filters-container">
+  <%= form_with url: request.path, method: :get, class: "filters-form", data: { turbo_frame: "dashboard-content" } do |f| %>
+    <div class="filter-group">
+      <label for="department"><%= t('filters.department') %></label>
+      <%= select_tag :department,
+          options_for_select(
+            [[t('filters.all_departments'), ""]] + Employee.distinct.pluck(:department).compact.sort.map { |d| [d.titleize, d] },
+            filters[:department]
+          ),
+          class: "filter-select" %>
+    </div>
+
+    <div class="filter-group">
+      <label for="location"><%= t('filters.location') %></label>
+      <%= select_tag :location,
+          options_for_select(
+            [[t('filters.all_locations'), ""]] + Employee.distinct.pluck(:location).compact.sort.map { |l| [l, l] },
+            filters[:location]
+          ),
+          class: "filter-select" %>
+    </div>
+
+    <div class="filter-group">
+      <label for="date_from"><%= t('filters.date_from') %></label>
+      <%= date_field_tag :date_from, filters[:date_from], class: "filter-input" %>
+    </div>
+
+    <div class="filter-group">
+      <label for="date_to"><%= t('filters.date_to') %></label>
+      <%= date_field_tag :date_to, filters[:date_to], class: "filter-input" %>
+    </div>
+
+    <div class="filter-actions">
+      <%= submit_tag t('action.apply_filters'), class: "btn btn-primary" %>
+      <%= link_to t('action.clear'), request.path, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>
+
+<style>
+.filters-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.filters-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  align-items: end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.filter-select,
+.filter-input {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.filter-select:focus,
+.filter-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  ring: 2px;
+  ring-color: #3b82f6;
+  ring-opacity: 0.2;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+}
+
+.btn-secondary {
+  background: #6b7280;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #4b5563;
+}
+</style>
