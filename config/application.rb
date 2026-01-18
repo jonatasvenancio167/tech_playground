@@ -16,6 +16,13 @@ module App
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # I18n configuration
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
+    config.i18n.available_locales = %i[en pt-BR]
+    config.i18n.default_locale = :"pt-BR"
+    config.i18n.enforce_available_locales = true
+    config.i18n.fallbacks = true
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
