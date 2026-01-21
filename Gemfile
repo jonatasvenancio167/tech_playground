@@ -88,7 +88,7 @@ gem "caxlsx", "~> 4.1"         # Excel generation
 gem "caxlsx_rails", "~> 0.6"   # Rails Excel integration
 
 # API enhancements
-gem "rack-cors", "~> 2.0"       # CORS support
+gem "rack-cors", "~> 3.0"       # CORS support
 gem "rack-attack", "~> 6.7"     # Rate limiting
 
 # Performance
