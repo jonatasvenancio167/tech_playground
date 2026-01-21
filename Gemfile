@@ -78,7 +78,7 @@ end
 # Analytics and Visualization
 gem "chartkick", "~> 5.0"       # Easy charts for dashboard
 gem "groupdate", "~> 6.4"       # Time series grouping
-gem "pagy", "~> 7.0"            # Fast pagination
+gem "pagy", "~> 43.2"           # Fast pagination
 gem "view_component", "~> 3.9" # Component-based views
 
 # Report Generation
