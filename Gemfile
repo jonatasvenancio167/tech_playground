@@ -82,7 +82,7 @@ gem "pagy", "~> 7.0"            # Fast pagination
 gem "view_component", "~> 3.9" # Component-based views
 
 # Report Generation
-gem "prawn", "~> 2.4"           # PDF generation
+gem "prawn", "~> 2.5"           # PDF generation
 gem "prawn-table", "~> 0.2"    # Tables in PDF
 gem "caxlsx", "~> 4.1"         # Excel generation
 gem "caxlsx_rails", "~> 0.6"   # Rails Excel integration
